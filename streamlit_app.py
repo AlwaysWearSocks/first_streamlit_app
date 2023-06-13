@@ -10,6 +10,12 @@ def get_fruityvice_data(this_fruit_choice):
     fruityvice_normalized = pandas.json_normalize(fruityvice_response.json())
     return fruityvice_normalized
 
+## Snowflake Functions
+def get_fruit_load_list():
+    with mycnx.cursor() as my_cur:
+         my_cur.execute("select * from pc_rivery_db.public.fruit_load_list")
+         return mycur.fetchall()
+
 my_fruit_list = pandas.read_csv("https://uni-lab-files.s3.us-west-2.amazonaws.com/dabw/fruit_macros.txt")
 my_fruit_list = my_fruit_list.set_index('Fruit')
 
@@ -43,12 +49,6 @@ except URLError as e:
 
 
 ## Add a button to load the fruit list from Snowflake
-## Snowflake Functions
-def get_fruit_load_list():
-    with mycnx.cursor() as my_cur:
-         my_cur.execute("select * from pc_rivery_db.public.fruit_load_list")
-         return mycur.fetchall()
-    
 streamlit.header("The fruit load list contains:")
 if streamlit.button('Get Fruit Load List'):
     my_cnx = snowflake.connector.connect(**streamlit.secrets["snowflake"])
